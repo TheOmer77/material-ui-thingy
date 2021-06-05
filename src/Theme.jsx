@@ -11,11 +11,13 @@ const Theme = ({ children }) => {
     () =>
       createMuiTheme({
         palette: {
-          primary: { main: '#304ffe' },
-          secondary: { main: '#ff3d00' },
+          // Set colors to normal/lighter variants, based on system dark theme setting
+          primary: { main: prefersDarkMode ? '#a4abff' : '#304ffe' },
+          secondary: { main: prefersDarkMode ? '#ffa689' : '#ff4205' },
           // Set app theme to light/dark based on system dark theme setting
           type: prefersDarkMode ? 'dark' : 'light',
         },
+        shape: { borderRadius: 16 },
       }),
     [prefersDarkMode]
   );
