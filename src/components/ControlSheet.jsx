@@ -39,11 +39,12 @@ const useStyles = makeStyles((theme) => ({
   sheet: {
     width: '100%',
     borderRadius: `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0 0`,
+    paddingBottom: theme.spacing(1),
     transform: 'translateY(100%)',
     transition: `transform ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
   },
   sheetOpen: { transform: 'translateY(0%)' },
-  sheetTitle: { padding: `${theme.spacing(1.5)}px ${theme.spacing(2)}px` },
+  sheetTitle: { padding: `${theme.spacing(1)}px ${theme.spacing(2)}px` },
   list: { padding: 0 },
   listSubheader: { position: 'relative' },
 }));
