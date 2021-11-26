@@ -53,8 +53,12 @@ const toggleButtons = [
 
 const App = () => {
   const classes = useStyles();
-  const { collapsing, hasSubtitle, customClassname, blockBtnsVertical } =
-    useGlobalStates();
+  const {
+    collapsing: [collapsing],
+    hasSubtitle: [hasSubtitle],
+    customClassname: [customClassname],
+    blockBtnsVertical: [blockBtnsVertical],
+  } = useGlobalStates();
   const [toggleButtonsState, setToggleButtonsState] = useState({
     ...toggleButtons.map((btn) => ({ [btn.name]: true })),
   });

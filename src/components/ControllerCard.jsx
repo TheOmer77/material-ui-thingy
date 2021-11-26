@@ -20,14 +20,10 @@ const useStyles = makeStyles((theme) => ({
 
 const ControllerCard = () => {
   const {
-    collapsing,
-    setCollapsing,
-    hasSubtitle,
-    setHasSubtitle,
-    customClassname,
-    setCustomClassname,
-    blockBtnsVertical,
-    setBlockBtnsVertical,
+    collapsing: [collapsing, setCollapsing],
+    hasSubtitle: [hasSubtitle, setHasSubtitle],
+    customClassname: [customClassname, setCustomClassname],
+    blockBtnsVertical: [blockBtnsVertical, setBlockBtnsVertical],
   } = useGlobalStates();
   const classes = useStyles();
   return (
