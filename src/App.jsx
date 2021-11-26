@@ -21,12 +21,6 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.light,
     },
   },
-  card: {
-    padding: theme.spacing(2),
-    position: 'fixed',
-    insetBlockEnd: theme.spacing(1),
-    marginInline: theme.spacing(1),
-  },
   togglesContainer: {
     paddingBlockStart: theme.spacing(2),
     '& .MuiButton-label': {
