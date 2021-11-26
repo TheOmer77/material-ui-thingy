@@ -9,6 +9,7 @@ import ControllerCard from './components/ControllerCard';
 import CollapsibleAppBar from './components/CollapsibleAppBar';
 import BlockButton from './components/BlockButton';
 import TestParagrqaph from './components/TestParagrqaph';
+import MaterialIcon from './components/MaterialIcon';
 
 import useGlobalStates from './hooks/useGlobalStates';
 
@@ -96,7 +97,7 @@ const App = () => {
                     [btn.name]: !prev[btn.name],
                   }))
                 }
-                startIcon={<i className='material-icons'>{btn.icon}</i>}
+                startIcon={<MaterialIcon iconName={btn.icon} />}
                 vertical={blockBtnsVertical}
                 disableElevation
                 fullWidth

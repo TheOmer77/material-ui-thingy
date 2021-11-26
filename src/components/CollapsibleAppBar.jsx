@@ -9,6 +9,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
+import MaterialIcon from './MaterialIcon';
+
 /** @param {string} value */
 const remToNumber = (value) => parseFloat(value.replace('rem', ''));
 
@@ -116,7 +118,7 @@ const CollapsibleAppBar = ({
           aria-label='menu'
           className={classes.menuButton}
         >
-          <i className='material-icons'>menu</i>
+          <MaterialIcon iconName='menu' />
         </IconButton>
         <div
           className={
