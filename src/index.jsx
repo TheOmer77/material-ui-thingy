@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
-
 import App from './App';
 import ThemeProvider from './Theme';
 import { GlobalStatesProvider } from './globalStates';
@@ -15,7 +13,6 @@ ReactDOM.render(
   <React.StrictMode>
     <GlobalStatesProvider>
       <ThemeProvider>
-        <CssBaseline />
         <App />
       </ThemeProvider>
     </GlobalStatesProvider>
