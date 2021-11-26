@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -14,6 +15,11 @@ import TestParagrqaph from './components/TestParagrqaph';
 import useGlobalStates from './hooks/useGlobalStates';
 
 const useStyles = makeStyles((theme) => ({
+  appBarTransition: {
+    transition: `box-shadow ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut} 0ms,
+    background-color ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut} 0ms,
+    color ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut} 0ms`,
+  },
   customAppBar: {
     background: theme.palette.background.default,
     color: theme.palette.primary.main,
@@ -70,7 +76,10 @@ const App = () => {
         collapsing={collapsing}
         title={collapsing ? 'Collapsing app bar!' : 'Just a normal app bar'}
         subtitle={hasSubtitle && 'It can also have a subtitle'}
-        className={customClassname ? classes.customAppBar : null}
+        className={classNames(
+          classes.appBarTransition,
+          customClassname && classes.customAppBar
+        )}
       />
       <ControlSheet />
       <Container
