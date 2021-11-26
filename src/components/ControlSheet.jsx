@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     transition: `transform ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
   },
   sheetOpen: { transform: 'translateY(0%)' },
-  sheetTitle: { padding: `${theme.spacing(1)}px ${theme.spacing(2)}px` },
+  sheetTitle: { padding: `${theme.spacing(1.5)}px ${theme.spacing(2)}px` },
   list: { padding: 0 },
   listSubheader: { position: 'relative' },
 }));
