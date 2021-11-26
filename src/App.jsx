@@ -5,11 +5,11 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import ControllerCard from './components/ControllerCard';
-import CollapsibleAppBar from './components/CollapsibleAppBar';
 import BlockButton from './components/BlockButton';
-import TestParagrqaph from './components/TestParagrqaph';
+import CollapsibleAppBar from './components/CollapsibleAppBar';
+import ControlSheet from './components/ControlSheet';
 import MaterialIcon from './components/MaterialIcon';
+import TestParagrqaph from './components/TestParagrqaph';
 
 import useGlobalStates from './hooks/useGlobalStates';
 
@@ -72,7 +72,7 @@ const App = () => {
         subtitle={hasSubtitle && 'It can also have a subtitle'}
         className={customClassname ? classes.customAppBar : null}
       />
-      <ControllerCard />
+      <ControlSheet />
       <Container
         className={collapsing ? classes.contentCollapsing : classes.content}
       >
