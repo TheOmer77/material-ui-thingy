@@ -14,6 +14,8 @@ import CollapsibleAppBar from './components/CollapsibleAppBar';
 import BlockButton from './components/BlockButton';
 import TestParagrqaph from './components/TestParagrqaph';
 
+import useGlobalStates from './hooks/useGlobalStates';
+
 const useStyles = makeStyles((theme) => ({
   customAppBar: {
     background: theme.palette.background.default,
@@ -61,10 +63,16 @@ const toggleButtons = [
 
 const App = () => {
   const classes = useStyles();
-  const [collapsing, setCollapsing] = useState(false);
-  const [hasSubtitle, setHasSubtitle] = useState(false);
-  const [customClassname, setCustomClassname] = useState(false);
-  const [blockBtnsVertical, setBlockBtnsVertical] = useState(false);
+  const {
+    collapsing,
+    setCollapsing,
+    hasSubtitle,
+    setHasSubtitle,
+    customClassname,
+    setCustomClassname,
+    blockBtnsVertical,
+    setBlockBtnsVertical,
+  } = useGlobalStates();
   const [toggleButtonsState, setToggleButtonsState] = useState({
     ...toggleButtons.map((btn) => ({ [btn.name]: true })),
   });
