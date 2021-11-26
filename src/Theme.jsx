@@ -1,7 +1,15 @@
 import React, { useEffect, useMemo } from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider, withStyles } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CssBaseline from '@material-ui/core/CssBaseline';
+
+const BetterRipple = withStyles((theme) => ({
+  '@global': {
+    '.MuiTouchRipple-rippleVisible': {
+      animation: `MuiTouchRipple-keyframes-enter ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeOut}`,
+    },
+  },
+}))(() => null);
 
 const metaThemeColor = document.querySelector('meta[name=theme-color]');
 
@@ -32,6 +40,7 @@ const Theme = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <BetterRipple />
       {children}
     </ThemeProvider>
   );
