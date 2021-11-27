@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Fragment } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { makeStyles } from '@material-ui/core';
@@ -58,6 +58,16 @@ const ControlSheet = ({ currentCategory }) => {
   const { collapsing, hasSubtitle, customClassname, blockBtnsVertical } =
     useGlobalStates();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    /** @param {KeyboardEvent} e */
+    const listener = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    if (open) document.addEventListener('keydown', listener);
+    else document.removeEventListener('keydown', listener);
+    return () => document.removeEventListener('keydown', listener);
+  }, [open]);
 
   /** @type {{ id: string; label: string; }[]} */
   const categories = useMemo(
@@ -121,6 +131,7 @@ const ControlSheet = ({ currentCategory }) => {
       <Backdrop
         open={open}
         onClick={() => setOpen(false)}
+        onKeyDown={(e) => console.log(e)}
         className={classes.backdrop}
       >
         <Container className={classes.container}>
