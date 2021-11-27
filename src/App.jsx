@@ -11,6 +11,7 @@ import CollapsibleAppBar from './components/CollapsibleAppBar';
 import ControlSheet from './components/ControlSheet';
 import MaterialIcon from './components/MaterialIcon';
 import TestParagrqaph from './components/TestParagrqaph';
+import ModalSheetTest from './components/ModalSheetTest';
 
 import useGlobalStates from './hooks/useGlobalStates';
 
@@ -116,6 +117,7 @@ const App = () => {
             </Grid>
           ))}
         </Grid>
+        <ModalSheetTest />
         <TestParagrqaph />
       </Container>
     </>
