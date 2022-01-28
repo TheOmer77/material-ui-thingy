@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
-import { makeStyles } from '@material-ui/core';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Fab from '@material-ui/core/Fab';
-import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Switch from '@material-ui/core/Switch';
+import DialogTitle from '@mui/material/DialogTitle';
+import Fab from '@mui/material/Fab';
+import List from '@mui/material/List';
+import ListSubheader from '@mui/material/ListSubheader';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import Switch from '@mui/material/Switch';
 
 import ModalSheet from './ModalSheet';
 import MaterialIcon from './MaterialIcon';
@@ -17,23 +16,10 @@ import useGlobalStates from '../hooks/useGlobalStates';
 
 const CATEGORY_IDS = { APP_BAR: 'appBar', BLOCK_BTNS: 'blockBtns' };
 
-const useStyles = makeStyles((theme) => ({
-  fab: {
-    position: 'fixed',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  extendedIcon: { marginRight: theme.spacing(1) },
-  list: { paddingTop: 0 },
-  listSubheader: { position: 'relative', lineHeight: `${theme.spacing(4)}px` },
-}));
-
 /**
  * @param {{ currentCategory: string }} props
  */
 const ControlSheet = ({ currentCategory }) => {
-  const classes = useStyles();
-
   const { collapsing, hasSubtitle, customClassname, blockBtnsVertical } =
     useGlobalStates();
   const [open, setOpen] = useState(false);
@@ -101,19 +87,34 @@ const ControlSheet = ({ currentCategory }) => {
         variant='extended'
         color='secondary'
         aria-label='options'
-        className={classes.fab}
+        sx={(theme) => ({
+          position: 'fixed',
+          bottom: theme.spacing(2),
+          right: theme.spacing(2),
+        })}
         onClick={() => setOpen(true)}
       >
-        <MaterialIcon iconName='settings' className={classes.extendedIcon} />
+        <MaterialIcon
+          iconName='settings'
+          sx={(theme) => ({ marginRight: theme.spacing(1) })}
+        />
         Options
       </Fab>
       <ModalSheet open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Options</DialogTitle>
         {categories.map((category) => (
           <List
-            className={classes.list}
+            sx={{
+              paddingTop: 0,
+              '& .MuiListSubheader-root': { backgroundColor: 'transparent' },
+            }}
             subheader={
-              <ListSubheader className={classes.listSubheader}>
+              <ListSubheader
+                sx={(theme) => ({
+                  position: 'relative',
+                  lineHeight: theme.spacing(4),
+                })}
+              >
                 {category.label}
               </ListSubheader>
             }

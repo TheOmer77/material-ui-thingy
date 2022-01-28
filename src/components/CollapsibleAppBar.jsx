@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 
 import MaterialIcon from './MaterialIcon';
 
 /** @param {string} value */
 const remToNumber = (value) => parseFloat(value.replace('rem', ''));
+/** @param {string} value */
+const pxToNumber = (value) => parseFloat(value.replace('px', ''));
 
-/** @param {import('@material-ui/core/styles').Theme} theme */
+/** @param {import('@mui/material/styles').Theme} theme */
 const getValues = (theme) => ({
   toolbarDesktop: { min: theme.spacing(8), max: theme.spacing(32) },
   toolbarMobile: { min: theme.spacing(7), max: theme.spacing(32) },
@@ -27,32 +29,6 @@ const getValues = (theme) => ({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
-  menuButton: {
-    marginInlineEnd: theme.spacing(2),
-    alignSelf: 'flex-start',
-    marginBlockStart: theme.spacing(0.5),
-    [theme.breakpoints.up('sm')]: { marginBlockStart: theme.spacing(1) },
-  },
-  titleContainer: {
-    flexGrow: 1,
-    alignSelf: 'flex-end',
-  },
-  titleMargin: {
-    marginBlockEnd: theme.spacing(1.5),
-    [theme.breakpoints.up('sm')]: { marginBlockEnd: theme.spacing(2) },
-  },
-  subtitleMargin: {
-    marginBlockEnd: theme.spacing(0.625),
-    [theme.breakpoints.up('sm')]: { marginBlockEnd: theme.spacing(1.125) },
-  },
-  title: { fontSize: theme.typography.h4.fontSize },
-  subtitle: {
-    marginBlockStart: theme.spacing(1) * -1,
-    fontWeight: 'normal',
-  },
-}));
-
 const scrollEvents = ['scroll', 'touchmove'];
 
 /** @param {React.Dispatch<React.SetStateAction<number>>} setScroll */
@@ -62,11 +38,9 @@ const CollapsibleAppBar = ({
   title,
   subtitle,
   collapsing,
-  className,
   children,
   ...props
 }) => {
-  const classes = useStyles();
   const theme = useTheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const smBreakpoint = useMediaQuery(theme.breakpoints.up('sm'));
@@ -96,7 +70,6 @@ const CollapsibleAppBar = ({
   return (
     <AppBar
       {...props}
-      className={className}
       // Set app bar theme to primary/dark based on system dark theme setting
       color={prefersDarkMode ? 'default' : 'primary'}
     >
@@ -104,9 +77,9 @@ const CollapsibleAppBar = ({
         style={
           collapsing
             ? {
-                height: `clamp(${toolbarValues.min}px, ${
-                  toolbarValues.max - scroll
-                }px, ${toolbarValues.max}px`,
+                height: `clamp(${toolbarValues.min}, ${
+                  pxToNumber(toolbarValues.max) - scroll
+                }px, ${toolbarValues.max}`,
               }
             : null
         }
@@ -115,31 +88,44 @@ const CollapsibleAppBar = ({
           edge='start'
           color='inherit'
           aria-label='menu'
-          className={classes.menuButton}
+          sx={(theme) => ({
+            marginInlineEnd: theme.spacing(2),
+            alignSelf: 'flex-start',
+            marginBlockStart: theme.spacing(1),
+            [theme.breakpoints.up('sm')]: {
+              marginBlockStart: theme.spacing(1.5),
+            },
+          })}
         >
           <MaterialIcon iconName='menu' />
         </IconButton>
-        <div
-          className={
-            collapsing
-              ? classNames(
-                  classes.titleContainer,
-                  subtitle ? classes.subtitleMargin : classes.titleMargin
-                )
-              : null
+        <Box
+          sx={(theme) =>
+            collapsing && {
+              flexGrow: 1,
+              alignSelf: 'flex-end',
+              marginBlockEnd: theme.spacing(subtitle ? 0.625 : 1.5),
+              [theme.breakpoints.up('sm')]: {
+                marginBlockEnd: theme.spacing(subtitle ? 1.125 : 2),
+              },
+            }
           }
         >
           <Typography
             variant='h6'
-            className={collapsing ? classes.title : null}
+            sx={(theme) =>
+              collapsing && {
+                fontSize: theme.typography.h4.fontSize,
+              }
+            }
             style={
               collapsing
                 ? {
                     fontSize: `clamp(${values.title.min}rem, ${
                       values.title.max - scroll / 216
                     }rem, ${values.title.max}rem)`,
-                    marginInlineStart: `clamp(-${theme.spacing(6)}px, ${
-                      theme.spacing(6) * -1 + scroll / 3
+                    marginInlineStart: `clamp(${theme.spacing(-6)}, ${
+                      pxToNumber(theme.spacing(-6)) + scroll / 3
                     }px, 0px)`,
                   }
                 : null
@@ -150,15 +136,18 @@ const CollapsibleAppBar = ({
           {subtitle && (
             <Typography
               variant='subtitle2'
-              className={classes.subtitle}
+              sx={(theme) => ({
+                marginBlockStart: theme.spacing(-1),
+                fontWeight: 'normal',
+              })}
               style={
                 collapsing
                   ? {
                       fontSize: `clamp(${values.subtitle.min}rem, ${
                         values.subtitle.max - scroll / 1536
                       }rem, ${values.subtitle.max}rem)`,
-                      marginInlineStart: `clamp(-${theme.spacing(6)}px, ${
-                        theme.spacing(6) * -1 + scroll / 3
+                      marginInlineStart: `clamp(${theme.spacing(-6)}, ${
+                        pxToNumber(theme.spacing(-6)) + scroll / 3
                       }px, 0px)`,
                     }
                   : null
@@ -167,7 +156,7 @@ const CollapsibleAppBar = ({
               {subtitle}
             </Typography>
           )}
-        </div>
+        </Box>
         {children}
       </Toolbar>
     </AppBar>
