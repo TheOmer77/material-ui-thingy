@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-// eslint-disable-next-line no-unused-vars
-import Button, { ButtonProps } from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/** @param {{vertical: boolean} & ButtonProps} props */
+/** @param {{vertical: boolean} & import('@material-ui/core/Button').ButtonProps */
 const BlockButton = ({ children, vertical = false, ...props }) => {
   const classes = useStyles();
   return (

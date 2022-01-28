@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-// eslint-disable-next-line no-unused-vars
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,7 +13,7 @@ import MaterialIcon from './MaterialIcon';
 /** @param {string} value */
 const remToNumber = (value) => parseFloat(value.replace('rem', ''));
 
-/** @param {Theme} theme */
+/** @param {import('@material-ui/core/styles').Theme} theme */
 const getValues = (theme) => ({
   toolbarDesktop: { min: theme.spacing(8), max: theme.spacing(32) },
   toolbarMobile: { min: theme.spacing(7), max: theme.spacing(32) },

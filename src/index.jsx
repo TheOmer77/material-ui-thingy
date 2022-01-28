@@ -8,7 +8,7 @@ import { GlobalStatesProvider } from './globalStates';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import './styles/index.css';
+import './styles/fonts.css';
 
 ReactDOM.render(
   <React.StrictMode>
