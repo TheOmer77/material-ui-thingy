@@ -8,7 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
 
-import ModalSheet from './ModalSheet';
+import ModalSheetDialog from './ModalSheetDialog';
 import TestTermsAndConditions from './TestTermsAndConditions';
 
 /** @typedef {"paper" | "body"} DialogScroll */
@@ -54,7 +54,7 @@ const ModalSheetTest = () => {
           Scroll = body
         </Button>
       </Box>
-      <ModalSheet open={open} onClose={closeSheet} scroll={scroll}>
+      <ModalSheetDialog open={open} onClose={closeSheet} scroll={scroll}>
         <DialogTitle>Terms & Conditions</DialogTitle>
         <DialogContent>
           <DialogContentText component='div'>
@@ -69,7 +69,7 @@ const ModalSheetTest = () => {
             Agree
           </Button>
         </DialogActions>
-      </ModalSheet>
+      </ModalSheetDialog>
     </>
   );
 };

@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Switch from '@mui/material/Switch';
 
-import ModalSheet from './ModalSheet';
+import ModalSheetDialog from './ModalSheetDialog';
 import MaterialIcon from './MaterialIcon';
 
 import useGlobalStates from '../hooks/useGlobalStates';
@@ -100,7 +100,7 @@ const ControlSheet = ({ currentCategory }) => {
         />
         Options
       </Fab>
-      <ModalSheet open={open} onClose={() => setOpen(false)}>
+      <ModalSheetDialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Options</DialogTitle>
         {categories.map((category) => (
           <List
@@ -144,7 +144,7 @@ const ControlSheet = ({ currentCategory }) => {
               )}
           </List>
         ))}
-      </ModalSheet>
+      </ModalSheetDialog>
     </>
   );
 };
