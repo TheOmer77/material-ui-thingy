@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 import DialogTitle from '@mui/material/DialogTitle';
+import Drawer from '@mui/material/Drawer';
 import Fab from '@mui/material/Fab';
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -9,7 +10,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Switch from '@mui/material/Switch';
 
-import ModalSheetDialog from './ModalSheetDialog';
 import MaterialIcon from './MaterialIcon';
 
 import useGlobalStates from '../hooks/useGlobalStates';
@@ -100,7 +100,18 @@ const ControlSheet = ({ currentCategory }) => {
         />
         Options
       </Fab>
-      <ModalSheetDialog open={open} onClose={() => setOpen(false)}>
+      <Drawer
+        anchor='bottom'
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={(theme) => ({
+          '& .MuiDrawer-paper': {
+            maxWidth: theme.breakpoints.values.sm,
+            mx: 'auto',
+            borderRadius: `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0 0`,
+          },
+        })}
+      >
         <DialogTitle>Options</DialogTitle>
         {categories.map((category) => (
           <List
@@ -144,7 +155,7 @@ const ControlSheet = ({ currentCategory }) => {
               )}
           </List>
         ))}
-      </ModalSheetDialog>
+      </Drawer>
     </>
   );
 };
