@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,21 +11,16 @@ import Typography from '@mui/material/Typography';
 import ModalSheetDialog from './ModalSheetDialog';
 import TestTermsAndConditions from './TestTermsAndConditions';
 
-/** @typedef {"paper" | "body"} DialogScroll */
+type DialogScroll = 'paper' | 'body';
 
 const ModalSheetTest = () => {
   const [open, setOpen] = useState(false);
-  /** @type {[DialogScroll, React.Dispatch<React.SetStateAction<DialogScroll>>]} */
-  const [scroll, setScroll] = useState('paper');
+  const [scroll, setScroll] = useState<DialogScroll>('paper');
 
-  const openSheet = useCallback(
-    /** @param {DialogScroll} scroll */
-    (scroll) => {
-      setScroll(scroll);
-      setOpen(true);
-    },
-    []
-  );
+  const openSheet = useCallback((scroll: DialogScroll) => {
+    setScroll(scroll);
+    setOpen(true);
+  }, []);
   const closeSheet = useCallback(() => setOpen(false), []);
 
   return (

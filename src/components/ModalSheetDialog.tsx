@@ -1,14 +1,16 @@
-import React, { forwardRef } from 'react';
+import { forwardRef, ReactElement, Ref } from 'react';
 
-import Dialog from '@mui/material/Dialog';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
+import type { TransitionProps } from '@mui/material/transitions';
 
-const Transition = forwardRef((props, ref) => (
-  <Slide direction='up' ref={ref} {...props} />
-));
+const Transition = forwardRef(
+  (props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) => (
+    <Slide direction='up' ref={ref} {...props} />
+  )
+);
 
-/** @param {{ useBorderRadius?: boolean } & import('@material-ui/core/Dialog').DialogProps} props */
-const ModalSheet = ({ useBorderRadius = true, children, ...props }) => {
+const ModalSheet = ({ children, ...props }: DialogProps) => {
   return (
     <Dialog
       TransitionComponent={Transition}
@@ -17,9 +19,7 @@ const ModalSheet = ({ useBorderRadius = true, children, ...props }) => {
         '& .MuiDialog-container': { alignItems: 'flex-end' },
         '& 	.MuiDialog-paper': {
           margin: `50vh 0 0 0`,
-          borderRadius: useBorderRadius
-            ? `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0 0`
-            : 0,
+          borderRadius: `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0 0`,
           '&.MuiDialog-paperFullWidth': { width: '100%' },
           '@media (max-width: 663.95px)': {
             '&.MuiDialog-paperWidthSm.MuiDialog-paperScrollBody': {

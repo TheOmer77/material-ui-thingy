@@ -1,19 +1,22 @@
-import { createContext, useState, useMemo } from 'react';
+import { createContext, useState, useMemo, ReactNode } from 'react';
 
-const initialState = {
-  /** @type {[boolean, React.Dispatch<React.SetStateAction<boolean>>]} */
+interface GlobalStates {
+  collapsing: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  hasSubtitle: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  customClassname: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  blockBtnsVertical: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+
+const initialState: GlobalStates = {
   collapsing: [false, () => {}],
-  /** @type {[boolean, React.Dispatch<React.SetStateAction<boolean>>]} */
   hasSubtitle: [false, () => {}],
-  /** @type {[boolean, React.Dispatch<React.SetStateAction<boolean>>]} */
   customClassname: [false, () => {}],
-  /** @type {[boolean, React.Dispatch<React.SetStateAction<boolean>>]} */
   blockBtnsVertical: [false, () => {}],
 };
 
 export const GlobalStatesContext = createContext(initialState);
 
-export const GlobalStatesProvider = ({ children }) => {
+export const GlobalStatesProvider = ({ children }: { children: ReactNode }) => {
   const collapsing = useState(false);
   const hasSubtitle = useState(false);
   const customClassname = useState(false);

@@ -36,7 +36,9 @@ const App = () => {
       <CollapsibleAppBar
         collapsing={collapsing}
         title={collapsing ? 'Collapsing app bar!' : 'Just a normal app bar'}
-        subtitle={hasSubtitle && 'It can also have a subtitle'}
+        {...(hasSubtitle
+          ? { subtitle: hasSubtitle && 'It can also have a subtitle' }
+          : {})}
         sx={(theme) => ({
           transition: `box-shadow ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut} 0ms,
           background-color ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut} 0ms,

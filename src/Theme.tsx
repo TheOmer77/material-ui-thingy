@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
 
 const metaThemeColor = document.querySelector('meta[name=theme-color]');
 
-const Theme = ({ children }) => {
+const Theme = ({ children }: { children: ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = useMemo(
     () =>
@@ -35,7 +35,7 @@ const Theme = ({ children }) => {
   );
 
   useEffect(() => {
-    metaThemeColor.setAttribute(
+    metaThemeColor?.setAttribute(
       'content',
       prefersDarkMode ? theme.palette.grey[900] : theme.palette.primary.main
     );

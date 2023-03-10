@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch } from 'react';
 
-import { useTheme } from '@mui/material/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import AppBar from '@mui/material/AppBar';
+import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -10,13 +10,10 @@ import Typography from '@mui/material/Typography';
 
 import MaterialIcon from './MaterialIcon';
 
-/** @param {string} value */
-const remToNumber = (value) => parseFloat(value.replace('rem', ''));
-/** @param {string} value */
-const pxToNumber = (value) => parseFloat(value.replace('px', ''));
+const remToNumber = (value: string) => parseFloat(value.replace('rem', ''));
+const pxToNumber = (value: string) => parseFloat(value.replace('px', ''));
 
-/** @param {import('@mui/material/styles').Theme} theme */
-const getValues = (theme) => ({
+const getValues = (theme: Theme) => ({
   toolbarDesktop: { min: theme.spacing(8), max: theme.spacing(32) },
   toolbarMobile: { min: theme.spacing(7), max: theme.spacing(32) },
   title: {
@@ -31,16 +28,22 @@ const getValues = (theme) => ({
 
 const scrollEvents = ['scroll', 'touchmove'];
 
-/** @param {React.Dispatch<React.SetStateAction<number>>} setScroll */
-const updateScroll = (setScroll) => setScroll(window.scrollY);
+const updateScroll = (setScroll: Dispatch<React.SetStateAction<number>>) =>
+  setScroll(window.scrollY);
+
+interface CollapsibleAppBar extends AppBarProps {
+  title?: string;
+  subtitle?: string;
+  collapsing?: boolean;
+}
 
 const CollapsibleAppBar = ({
   title,
   subtitle,
-  collapsing,
+  collapsing = false,
   children,
   ...props
-}) => {
+}: CollapsibleAppBar) => {
   const theme = useTheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const smBreakpoint = useMediaQuery(theme.breakpoints.up('sm'));
@@ -81,7 +84,7 @@ const CollapsibleAppBar = ({
                   pxToNumber(toolbarValues.max) - scroll
                 }px, ${toolbarValues.max}`,
               }
-            : null
+            : {}
         }
       >
         <IconButton
@@ -150,7 +153,7 @@ const CollapsibleAppBar = ({
                         pxToNumber(theme.spacing(-6)) + scroll / 3
                       }px, 0px)`,
                     }
-                  : null
+                  : {}
               }
             >
               {subtitle}

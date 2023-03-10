@@ -5,28 +5,37 @@ import Drawer from '@mui/material/Drawer';
 import Fab from '@mui/material/Fab';
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Switch from '@mui/material/Switch';
 
 import MaterialIcon from './MaterialIcon';
+import useGlobalStates from 'hooks/useGlobalStates';
 
-import useGlobalStates from '../hooks/useGlobalStates';
+const CATEGORIES = [
+  { id: 'appBar', label: 'App bar' },
+  { id: 'blockBtns', label: 'Block buttons' },
+] as const;
 
-const CATEGORY_IDS = { APP_BAR: 'appBar', BLOCK_BTNS: 'blockBtns' };
+interface ControlSheetListItem {
+  id: string;
+  category: typeof CATEGORIES[number]['id'];
+  label: string;
+  state: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
 
-/**
- * @param {{ currentCategory: string }} props
- */
-const ControlSheet = ({ currentCategory }) => {
+interface ControlSheetProps {
+  currentCategory?: typeof CATEGORIES[number]['id'];
+}
+
+const ControlSheet = ({ currentCategory }: ControlSheetProps) => {
   const { collapsing, hasSubtitle, customClassname, blockBtnsVertical } =
     useGlobalStates();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    /** @param {KeyboardEvent} e */
-    const listener = (e) => {
+    const listener = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
     };
     if (open) document.addEventListener('keydown', listener);
@@ -34,46 +43,29 @@ const ControlSheet = ({ currentCategory }) => {
     return () => document.removeEventListener('keydown', listener);
   }, [open]);
 
-  /** @type {{ id: string; label: string; }[]} */
-  const categories = useMemo(
-    () => [
-      { id: CATEGORY_IDS.APP_BAR, label: 'App bar' },
-      { id: CATEGORY_IDS.BLOCK_BTNS, label: 'Block buttons' },
-    ],
-    []
-  );
-
-  /**
-   * @type {{
-   * id: string;
-   * category: string;
-   * label: string;
-   * state: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-   * }[]}
-   */
-  const listItems = useMemo(
+  const listItems = useMemo<ControlSheetListItem[]>(
     () => [
       {
         id: 'collapsing',
-        category: CATEGORY_IDS.APP_BAR,
+        category: 'appBar',
         label: 'Collapsing',
         state: collapsing,
       },
       {
         id: 'hasSubtitle',
-        category: CATEGORY_IDS.APP_BAR,
+        category: 'appBar',
         label: 'Has subtitle',
         state: hasSubtitle,
       },
       {
         id: 'customClassname',
-        category: CATEGORY_IDS.APP_BAR,
+        category: 'appBar',
         label: 'Custom classname',
         state: customClassname,
       },
       {
         id: 'blockBtnsVertical',
-        category: CATEGORY_IDS.BLOCK_BTNS,
+        category: 'appBar',
         label: 'Vertical',
         state: blockBtnsVertical,
       },
@@ -113,7 +105,7 @@ const ControlSheet = ({ currentCategory }) => {
         })}
       >
         <DialogTitle>Options</DialogTitle>
-        {categories.map((category) => (
+        {CATEGORIES.map((category) => (
           <List
             sx={{
               paddingTop: 0,
@@ -136,8 +128,7 @@ const ControlSheet = ({ currentCategory }) => {
               .map(
                 ({ id, category, label, state: [state, setState] }) =>
                   (!currentCategory || currentCategory === category) && (
-                    <ListItem
-                      button
+                    <ListItemButton
                       key={id}
                       onClick={() => setState((prev) => !prev)}
                     >
@@ -150,7 +141,7 @@ const ControlSheet = ({ currentCategory }) => {
                           onChange={() => setState((prev) => !prev)}
                         />
                       </ListItemSecondaryAction>
-                    </ListItem>
+                    </ListItemButton>
                   )
               )}
           </List>

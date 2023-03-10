@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import App from './App';
 import ThemeProvider from './Theme';
@@ -10,13 +10,12 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './styles/fonts.css';
 
-ReactDOM.render(
-  <React.StrictMode>
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <StrictMode>
     <GlobalStatesProvider>
       <ThemeProvider>
         <App />
       </ThemeProvider>
     </GlobalStatesProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 );
