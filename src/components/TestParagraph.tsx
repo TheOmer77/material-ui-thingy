@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TestParagrqaph = () => (
+const TestParagraph = () => (
   <p>
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque eos ea
     provident fugiat ipsa repellendus cum nisi voluptate, itaque ratione
@@ -212,4 +212,4 @@ const TestParagrqaph = () => (
   </p>
 );
 
-export default TestParagrqaph;
+export default TestParagraph;
