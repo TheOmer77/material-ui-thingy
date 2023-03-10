@@ -11,22 +11,18 @@ import MaterialIcon from './components/MaterialIcon';
 import TestParagraph from './components/TestParagraph';
 import ModalSheetTest from './components/ModalSheetTest';
 
-import useGlobalStates from './hooks/useGlobalStates';
+import useGlobalState from 'hooks/useGlobalState';
 
 const toggleButtons = [
   { name: 'WiFi', icon: 'wifi' },
   { name: 'Bluetooth', icon: 'bluetooth' },
   { name: 'Mobile Data', icon: 'network_cell' },
   { name: 'Location', icon: 'place' },
-];
+] as const;
 
 const App = () => {
-  const {
-    collapsing: [collapsing],
-    hasSubtitle: [hasSubtitle],
-    customClassname: [customClassname],
-    blockBtnsVertical: [blockBtnsVertical],
-  } = useGlobalStates();
+  const [{ blockBtnsVertical, collapsing, customClassname, hasSubtitle }] =
+    useGlobalState();
   const [toggleButtonsState, setToggleButtonsState] = useState({
     ...toggleButtons.map((btn) => ({ [btn.name]: true })),
   });

@@ -11,7 +11,8 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Switch from '@mui/material/Switch';
 
 import MaterialIcon from './MaterialIcon';
-import useGlobalStates from 'hooks/useGlobalStates';
+import useGlobalStates from 'hooks/useGlobalState';
+import { GlobalState } from 'contexts/globalState';
 
 const CATEGORIES = [
   { id: 'appBar', label: 'App bar' },
@@ -19,10 +20,10 @@ const CATEGORIES = [
 ] as const;
 
 interface ControlSheetListItem {
-  id: string;
+  id: keyof GlobalState;
   category: typeof CATEGORIES[number]['id'];
   label: string;
-  state: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  state: GlobalState[keyof GlobalState];
 }
 
 interface ControlSheetProps {
@@ -30,8 +31,10 @@ interface ControlSheetProps {
 }
 
 const ControlSheet = ({ currentCategory }: ControlSheetProps) => {
-  const { collapsing, hasSubtitle, customClassname, blockBtnsVertical } =
-    useGlobalStates();
+  const [
+    { collapsing, hasSubtitle, customClassname, blockBtnsVertical },
+    setGlobalState,
+  ] = useGlobalStates();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -126,11 +129,11 @@ const ControlSheet = ({ currentCategory }: ControlSheetProps) => {
             {listItems
               .filter((item) => item.category === category.id)
               .map(
-                ({ id, category, label, state: [state, setState] }) =>
+                ({ id, category, label, state }) =>
                   (!currentCategory || currentCategory === category) && (
                     <ListItemButton
                       key={id}
-                      onClick={() => setState((prev) => !prev)}
+                      onClick={() => setGlobalState({ [id]: !state })}
                     >
                       <ListItemText primary={label} />
                       <ListItemSecondaryAction>
@@ -138,7 +141,7 @@ const ControlSheet = ({ currentCategory }: ControlSheetProps) => {
                           edge='end'
                           checked={state}
                           name={id}
-                          onChange={() => setState((prev) => !prev)}
+                          onChange={() => setGlobalState({ [id]: !state })}
                         />
                       </ListItemSecondaryAction>
                     </ListItemButton>
