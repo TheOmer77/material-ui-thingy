@@ -8,7 +8,7 @@ import GlobalStateProvider from 'components/GlobalStateProvider';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import './styles/fonts.css';
+import '@fontsource/material-icons/base.css';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
