@@ -17,12 +17,12 @@ const getValues = (theme: Theme) => ({
   toolbarDesktop: { min: theme.spacing(8), max: theme.spacing(32) },
   toolbarMobile: { min: theme.spacing(7), max: theme.spacing(32) },
   title: {
-    min: remToNumber(theme.typography.h6.fontSize),
-    max: remToNumber(theme.typography.h4.fontSize),
+    min: remToNumber(theme.typography.h6.fontSize as string),
+    max: remToNumber(theme.typography.h4.fontSize as string),
   },
   subtitle: {
-    min: remToNumber(theme.typography.subtitle2.fontSize),
-    max: remToNumber(theme.typography.subtitle1.fontSize),
+    min: remToNumber(theme.typography.subtitle2.fontSize as string),
+    max: remToNumber(theme.typography.subtitle1.fontSize as string),
   },
 });
 
@@ -103,24 +103,24 @@ const CollapsibleAppBar = ({
           <MaterialIcon iconName='menu' />
         </IconButton>
         <Box
-          sx={(theme) =>
-            collapsing && {
-              flexGrow: 1,
-              alignSelf: 'flex-end',
-              marginBlockEnd: theme.spacing(subtitle ? 0.625 : 1.5),
-              [theme.breakpoints.up('sm')]: {
-                marginBlockEnd: theme.spacing(subtitle ? 1.125 : 2),
-              },
-            }
-          }
+          {...(collapsing
+            ? {
+                sx: (theme) => ({
+                  flexGrow: 1,
+                  alignSelf: 'flex-end',
+                  marginBlockEnd: theme.spacing(subtitle ? 0.625 : 1.5),
+                  [theme.breakpoints.up('sm')]: {
+                    marginBlockEnd: theme.spacing(subtitle ? 1.125 : 2),
+                  },
+                }),
+              }
+            : {})}
         >
           <Typography
             variant='h6'
-            sx={(theme) =>
-              collapsing && {
-                fontSize: theme.typography.h4.fontSize,
-              }
-            }
+            {...(collapsing
+              ? { sx: (theme) => ({ fontSize: theme.typography.h4.fontSize }) }
+              : {})}
             style={
               collapsing
                 ? {
@@ -131,7 +131,7 @@ const CollapsibleAppBar = ({
                       pxToNumber(theme.spacing(-6)) + scroll / 3
                     }px, 0px)`,
                   }
-                : null
+                : {}
             }
           >
             {title}
