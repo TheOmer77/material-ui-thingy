@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
-import ThemeProvider from './Theme';
+import ThemeProvider from 'components/ThemeProvider';
 import GlobalStateProvider from 'components/GlobalStateProvider';
 
 import '@fontsource/roboto/400.css';
