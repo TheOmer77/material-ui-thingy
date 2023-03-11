@@ -9,7 +9,7 @@ const App = () => {
     <>
       <CollapsibleAppBar
         title='App'
-        subtitle='This is a subtitle!'
+        // subtitle='This is a subtitle!'
         type='collapsing'
       >
         <Button color='inherit'>Login</Button>
