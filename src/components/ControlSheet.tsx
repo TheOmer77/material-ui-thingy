@@ -68,7 +68,7 @@ const ControlSheet = ({ currentCategory }: ControlSheetProps) => {
       },
       {
         id: 'blockBtnsVertical',
-        category: 'appBar',
+        category: 'blockBtns',
         label: 'Vertical',
         state: blockBtnsVertical,
       },
