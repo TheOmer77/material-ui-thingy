@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { alpha } from '@mui/material/styles';
 import Container from '@mui/material/Container';
@@ -14,18 +14,22 @@ import ModalSheetTest from './components/ModalSheetTest';
 import useGlobalState from 'hooks/useGlobalState';
 
 const toggleButtons = [
-  { name: 'WiFi', icon: 'wifi' },
-  { name: 'Bluetooth', icon: 'bluetooth' },
-  { name: 'Mobile Data', icon: 'network_cell' },
-  { name: 'Location', icon: 'place' },
+  { id: 'wifi', label: 'WiFi', icon: 'wifi' },
+  { id: 'bluetooth', label: 'Bluetooth', icon: 'bluetooth' },
+  { id: 'mobileData', label: 'Mobile Data', icon: 'network_cell' },
+  { id: 'location', label: 'Location', icon: 'place' },
 ] as const;
+const initialToggleBtnsState = toggleButtons.reduce(
+  (accumulator, current) => ({ ...accumulator, [current.id]: false }),
+  {}
+) as Record<typeof toggleButtons[number]['id'], boolean>;
 
 const App = () => {
   const [{ blockBtnsVertical, collapsing, customClassname, hasSubtitle }] =
     useGlobalState();
-  const [toggleButtonsState, setToggleButtonsState] = useState({
-    ...toggleButtons.map((btn) => ({ [btn.name]: true })),
-  });
+  const [toggleButtonsState, setToggleButtonsState] = useState(
+    initialToggleBtnsState
+  );
 
   return (
     <>
@@ -75,18 +79,18 @@ const App = () => {
               item
               xs={!blockBtnsVertical && 6}
               md={!blockBtnsVertical && 3}
-              key={btn.name}
+              key={btn.id}
             >
               <BlockButton
                 sx={(theme) => ({
-                  backgroundColor: toggleButtonsState[btn.name]
+                  backgroundColor: toggleButtonsState[btn.id]
                     ? theme.palette.primary.main
                     : alpha(theme.palette.primary.main, 0.125),
-                  color: toggleButtonsState[btn.name]
+                  color: toggleButtonsState[btn.id]
                     ? theme.palette.primary.contrastText
                     : theme.palette.text.primary,
                   '&:hover': {
-                    backgroundColor: toggleButtonsState[btn.name]
+                    backgroundColor: toggleButtonsState[btn.id]
                       ? theme.palette.primary.dark
                       : alpha(theme.palette.primary.main, 0.25),
                   },
@@ -95,7 +99,7 @@ const App = () => {
                 onClick={() =>
                   setToggleButtonsState((prev) => ({
                     ...prev,
-                    [btn.name]: !prev[btn.name],
+                    [btn.id]: !prev[btn.id],
                   }))
                 }
                 startIcon={<MaterialIcon iconName={btn.icon} />}
@@ -103,7 +107,7 @@ const App = () => {
                 disableElevation
                 fullWidth
               >
-                {btn.name}
+                {btn.label}
               </BlockButton>
             </Grid>
           ))}
