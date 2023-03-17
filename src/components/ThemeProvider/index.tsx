@@ -3,14 +3,32 @@ import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
 
+import COLORS from 'constants/colors';
+import { getNeutralVariant } from 'utils/colorUtils';
+
 const metaThemeColor = document.querySelector('meta[name=theme-color]');
 
 const appTheme = (prefersDarkMode: boolean) =>
   createTheme({
     palette: {
       // Set colors to normal/lighter variants, based on system dark theme setting
-      primary: { main: prefersDarkMode ? '#a4abff' : '#304ffe' },
-      secondary: { main: prefersDarkMode ? '#ffa689' : '#ff4205' },
+      primary: { main: COLORS.primary[prefersDarkMode ? 80 : 45] },
+      secondary: { main: COLORS.secondary[prefersDarkMode ? 80 : 55] },
+      success: {
+        main: COLORS.success[prefersDarkMode ? 90 : 60],
+        contrastText: !prefersDarkMode ? 'white' : 'black',
+      },
+      warning: { main: COLORS.warning[prefersDarkMode ? 90 : 80] },
+      error: { main: COLORS.error[prefersDarkMode ? 80 : 55] },
+      info: { main: COLORS.info[prefersDarkMode ? 90 : 60] },
+      background: {
+        default: prefersDarkMode
+          ? getNeutralVariant(COLORS.primary[5])
+          : '#fff',
+        paper: prefersDarkMode
+          ? getNeutralVariant(COLORS.primary[10])
+          : getNeutralVariant(COLORS.primary[95]),
+      },
       // Set app theme to light/dark based on system dark theme setting
       mode: prefersDarkMode ? 'dark' : 'light',
     },
@@ -24,6 +42,13 @@ const appTheme = (prefersDarkMode: boolean) =>
               animationDuration: '250ms',
             },
           },
+        },
+      },
+
+      MuiAppBar: {
+        styleOverrides: {
+          root: { backgroundImage: 'none' },
+          colorTransparent: { boxShadow: 'none', transition: 'none' },
         },
       },
     },
