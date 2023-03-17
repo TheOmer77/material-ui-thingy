@@ -75,6 +75,7 @@ const appTheme = (prefersDarkMode: boolean) => {
       MuiCard: { styleOverrides: { root: { boxShadow: 'none' } } },
       MuiAppBar: {
         styleOverrides: {
+          colorDefault: { backgroundColor: palette.background.paper },
           colorTransparent: {
             boxShadow: 'none',
             backgroundImage: 'none',
