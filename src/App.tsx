@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
 import CollapsibleAppBar from 'components/CollapsibleAppBar';
+import TestCards from 'components/TestCards';
 import TestColorButtons from 'components/TestColorButtons';
 import TestParagraph from 'components/TestParagraph';
 
@@ -13,6 +14,7 @@ const App = () => {
       </CollapsibleAppBar>
       <Container>
         <TestColorButtons />
+        <TestCards />
         <TestParagraph />
       </Container>
     </>
