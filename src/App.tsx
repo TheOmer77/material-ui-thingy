@@ -7,12 +7,8 @@ import TestParagraph from 'components/TestParagraph';
 const App = () => {
   return (
     <>
-      <CollapsibleAppBar
-        title='App'
-        // subtitle='This is a subtitle!'
-        type='collapsing'
-      >
-        <Button color='inherit'>Login</Button>
+      <CollapsibleAppBar title='App' collapsing>
+        <Button>Login</Button>
       </CollapsibleAppBar>
       <Container>
         <TestParagraph />

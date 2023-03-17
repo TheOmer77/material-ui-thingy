@@ -1,4 +1,5 @@
-import React, { useState, useEffect, Dispatch } from 'react';
+import { useState, useEffect, Dispatch } from 'react';
+import classNames from 'classnames';
 
 import { styled } from '@mui/material';
 import { Theme, useTheme } from '@mui/material/styles';
@@ -9,7 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import MaterialIcon from 'components/MaterialIcon';
-import classNames from 'classnames';
 
 const remToNumber = (value: string) => parseFloat(value.replace('rem', ''));
 const pxToNumber = (value: string) => parseFloat(value.replace('px', ''));
@@ -38,10 +38,10 @@ const scrollEvents = ['scroll', 'touchmove'];
 const updateScroll = (setScroll: Dispatch<React.SetStateAction<number>>) =>
   setScroll(window.scrollY);
 
-interface CollapsibleAppBar extends AppBarProps {
+interface CollapsibleAppBarProps extends AppBarProps {
   title?: string;
   subtitle?: string;
-  type?: 'normal' | 'collapsing';
+  collapsing?: boolean;
 }
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -92,14 +92,16 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   zIndex: theme.zIndex.appBar + 1,
   width: '100%',
   top: 0,
-  color: theme.palette.primary.contrastText,
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-}));
+  color:
+    theme.palette.mode === 'dark'
+      ? theme.palette.common.white
+      : theme.palette.primary.contrastText,
 
-const NavigationIconButton = styled(IconButton)(({ theme }) => ({
-  marginRight: theme.spacing(2),
+  '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
+  '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
 }));
 
 const ToolbarPadding = styled(Toolbar)(({ theme }) => ({
@@ -120,12 +122,12 @@ const ToolbarPadding = styled(Toolbar)(({ theme }) => ({
 const CollapsibleAppBar = ({
   title,
   subtitle,
-  type = 'normal',
+  collapsing = false,
+  color = 'primary',
   children,
   ...props
-}: CollapsibleAppBar) => {
+}: CollapsibleAppBarProps) => {
   const theme = useTheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const smBreakpoint = useMediaQuery(theme.breakpoints.up('sm'));
   const [scroll, setScroll] = useState(window.scrollY);
   const values = getValues(theme);
@@ -135,75 +137,50 @@ const CollapsibleAppBar = ({
 
   useEffect(() => {
     const eventListener = () => updateScroll(setScroll);
-    if (type === 'collapsing') {
+    if (collapsing) {
       setScroll(window.scrollY);
       scrollEvents.forEach((event) =>
         document.addEventListener(event, eventListener)
       );
     }
     return () => {
-      if (type === 'collapsing')
+      if (collapsing)
         scrollEvents.forEach((event) =>
           document.removeEventListener(event, eventListener)
         );
     };
-  }, [type]);
+  }, []);
 
   return (
     <>
-      <StyledAppBar
-        {...props}
-        // Set app bar theme to primary/dark based on system dark theme setting
-        color={prefersDarkMode ? 'default' : 'primary'}
-      >
-        <Toolbar
-          style={
-            type === 'collapsing'
-              ? {
-                  height: `clamp(${toolbarValues.min}px, ${
-                    toolbarValues.max - scroll
-                  }px, ${toolbarValues.max}px`,
-                }
-              : {}
-          }
-        >
-          <div
-            className={classNames(
-              'title-container',
-              type === 'collapsing' &&
-                (subtitle ? 'subtitle-margin' : 'title-margin')
-            )}
+      {!(color === 'transparent' && !title?.length) && (
+        <StyledAppBar {...props} color={color}>
+          <Toolbar
+            style={
+              collapsing
+                ? {
+                    height: `clamp(${toolbarValues.min}px, ${
+                      toolbarValues.max - scroll
+                    }px, ${toolbarValues.max}px`,
+                  }
+                : {}
+            }
           >
-            <Typography
-              variant='h6'
+            <div
               className={classNames(
-                type === 'collapsing' && 'title-collapsing'
+                'title-container',
+                collapsing && (subtitle ? 'subtitle-margin' : 'title-margin')
               )}
-              style={
-                type === 'collapsing'
-                  ? {
-                      fontSize: `clamp(${values.title.min}rem, ${
-                        values.title.max - scroll / 75
-                      }rem, ${values.title.max}rem)`,
-                      marginInlineStart: `clamp(0px, ${
-                        scroll / (smBreakpoint ? 1.625 : 1.5)
-                      }px, ${theme.spacing(6)})`,
-                    }
-                  : {}
-              }
             >
-              {title}
-            </Typography>
-            {subtitle && (
               <Typography
-                variant='subtitle2'
-                className='subtitle'
+                variant='h6'
+                className={classNames(collapsing && 'title-collapsing')}
                 style={
-                  type === 'collapsing'
+                  collapsing
                     ? {
-                        fontSize: `clamp(${values.subtitle.min}rem, ${
-                          values.subtitle.max - scroll / 512
-                        }rem, ${values.subtitle.max}rem)`,
+                        fontSize: `clamp(${values.title.min}rem, ${
+                          values.title.max - scroll / 75
+                        }rem, ${values.title.max}rem)`,
                         marginInlineStart: `clamp(0px, ${
                           scroll / (smBreakpoint ? 1.625 : 1.5)
                         }px, ${theme.spacing(6)})`,
@@ -211,22 +188,40 @@ const CollapsibleAppBar = ({
                     : {}
                 }
               >
-                {subtitle}
+                {title}
               </Typography>
-            )}
-          </div>
-        </Toolbar>
-      </StyledAppBar>
+              {subtitle && (
+                <Typography
+                  variant='subtitle2'
+                  className='subtitle'
+                  style={
+                    collapsing
+                      ? {
+                          fontSize: `clamp(${values.subtitle.min}rem, ${
+                            values.subtitle.max - scroll / 512
+                          }rem, ${values.subtitle.max}rem)`,
+                          marginInlineStart: `clamp(0px, ${
+                            scroll / (smBreakpoint ? 1.625 : 1.5)
+                          }px, ${theme.spacing(6)})`,
+                        }
+                      : {}
+                  }
+                >
+                  {subtitle}
+                </Typography>
+              )}
+            </div>
+          </Toolbar>
+        </StyledAppBar>
+      )}
       <StyledToolbar>
-        <NavigationIconButton edge='start' color='inherit' aria-label='menu'>
+        <IconButton edge='start' size='large' aria-label='menu'>
           <MaterialIcon iconName='menu' />
-        </NavigationIconButton>
-        <div>{children}</div>
+        </IconButton>
+        <div className='actions-container'>{children}</div>
       </StyledToolbar>
       <ToolbarPadding
-        className={
-          type === 'collapsing' ? 'appbar-padding-collapsing' : 'appbar-padding'
-        }
+        className={collapsing ? 'appbar-padding-collapsing' : 'appbar-padding'}
       />
     </>
   );
