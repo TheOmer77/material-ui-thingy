@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { styled } from '@mui/material';
 import { Theme, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import AppBar, { AppBarProps } from '@mui/material/AppBar';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -38,13 +38,13 @@ const scrollEvents = ['scroll', 'touchmove'];
 const updateScroll = (setScroll: Dispatch<React.SetStateAction<number>>) =>
   setScroll(window.scrollY);
 
-interface CollapsibleAppBarProps extends AppBarProps {
+interface AppBarProps extends MuiAppBarProps {
   title?: string;
   subtitle?: string;
   collapsing?: boolean;
 }
 
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
+const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
   '&.MuiAppBar-transparent': {
     backgroundColor: 'transparent',
     backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));',
@@ -121,14 +121,14 @@ const ToolbarPadding = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-const CollapsibleAppBar = ({
+const AppBar = ({
   title,
   subtitle,
   collapsing = false,
   color = 'primary',
   children,
   ...props
-}: CollapsibleAppBarProps) => {
+}: AppBarProps) => {
   const theme = useTheme();
   const smBreakpoint = useMediaQuery(theme.breakpoints.up('sm'));
   const [scroll, setScroll] = useState(window.scrollY);
@@ -229,4 +229,4 @@ const CollapsibleAppBar = ({
   );
 };
 
-export default CollapsibleAppBar;
+export default AppBar;

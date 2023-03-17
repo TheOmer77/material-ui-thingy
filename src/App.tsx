@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
-import CollapsibleAppBar from 'components/CollapsibleAppBar';
+import AppBar from 'components/CollapsibleAppBar';
 import TestCards from 'components/TestCards';
 import TestColorButtons from 'components/TestColorButtons';
 import TestParagraph from 'components/TestParagraph';
@@ -9,9 +9,9 @@ import TestParagraph from 'components/TestParagraph';
 const App = () => {
   return (
     <>
-      <CollapsibleAppBar title='App' collapsing>
+      <AppBar title='App' collapsing>
         <Button>Login</Button>
-      </CollapsibleAppBar>
+      </AppBar>
       <Container>
         <TestColorButtons />
         <TestCards />
