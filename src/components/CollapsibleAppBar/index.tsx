@@ -85,23 +85,25 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
       fontWeight: 'normal',
     },
   },
-}));
+  '& + .MuiToolbar-root': {
+    position: 'fixed',
+    zIndex: theme.zIndex.appBar + 1,
+    width: '100%',
+    top: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  position: 'fixed',
-  zIndex: theme.zIndex.appBar + 1,
-  width: '100%',
-  top: 0,
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.common.white
-      : theme.palette.primary.contrastText,
-
-  '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
-  '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
+    '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
+    '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
+  },
+  [`&.MuiAppBar-colorPrimary + .MuiToolbar-root,
+  &.MuiAppBar-colorSecondary + .MuiToolbar-root`]: {
+    color:
+      theme.palette.mode === 'dark'
+        ? theme.palette.common.white
+        : theme.palette.primary.contrastText,
+  },
 }));
 
 const ToolbarPadding = styled(Toolbar)(({ theme }) => ({
@@ -214,12 +216,12 @@ const CollapsibleAppBar = ({
           </Toolbar>
         </StyledAppBar>
       )}
-      <StyledToolbar>
+      <Toolbar>
         <IconButton edge='start' size='large' aria-label='menu'>
           <MaterialIcon iconName='menu' />
         </IconButton>
         <div className='actions-container'>{children}</div>
-      </StyledToolbar>
+      </Toolbar>
       <ToolbarPadding
         className={collapsing ? 'appbar-padding-collapsing' : 'appbar-padding'}
       />
