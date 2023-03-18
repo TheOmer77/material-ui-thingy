@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import { styled } from '@mui/material';
@@ -40,6 +40,7 @@ interface AppBarProps extends MuiAppBarProps {
   title?: string;
   subtitle?: string;
   collapsing?: boolean;
+  navIcon?: ReactNode;
 }
 
 const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
@@ -133,6 +134,11 @@ const AppBar = ({
   subtitle,
   collapsing = false,
   color = 'primary',
+  navIcon = (
+    <IconButton edge='start' size='large' aria-label='menu'>
+      <MaterialIcon iconName='menu' />
+    </IconButton>
+  ),
   children,
   ...props
 }: AppBarProps) => {
@@ -242,9 +248,7 @@ const AppBar = ({
         </StyledAppBar>
       )}
       <Toolbar>
-        <IconButton edge='start' size='large' aria-label='menu'>
-          <MaterialIcon iconName='menu' />
-        </IconButton>
+        {navIcon}
         <div className='actions-container'>{children}</div>
       </Toolbar>
       <ToolbarPadding
