@@ -79,7 +79,8 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
       marginBlockEnd: theme.spacing(0.75),
       [theme.breakpoints.up('sm')]: { marginBlockEnd: theme.spacing(1.125) },
     },
-    '& .title-collapsing': { fontSize: theme.typography.h4.fontSize },
+    '& .title:not(.title-collapsing)': { marginLeft: theme.spacing(6) },
+    '& .title.title-collapsing': { fontSize: theme.typography.h4.fontSize },
     '& .subtitle': {
       marginBlockStart: theme.spacing(-1),
       fontWeight: 'normal',
@@ -176,7 +177,10 @@ const AppBar = ({
             >
               <Typography
                 variant='h6'
-                className={classNames(collapsing && 'title-collapsing')}
+                className={classNames(
+                  'title',
+                  collapsing && 'title-collapsing'
+                )}
                 style={
                   collapsing
                     ? {
