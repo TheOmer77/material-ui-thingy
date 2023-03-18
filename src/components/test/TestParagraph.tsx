@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TestParagraph = () => (
   <p>
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque eos ea

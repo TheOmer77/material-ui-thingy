@@ -1,4 +1,4 @@
-import { createContext, Dispatch } from 'react';
+import { createContext } from 'react';
 
 export interface GlobalState {
   collapsing: boolean;
@@ -13,7 +13,7 @@ export const initialState: GlobalState = {
   customClassname: false,
   blockBtnsVertical: false,
 };
-const initialDispatch = (_options?: Partial<GlobalState>) => {
+const initialDispatch = () => {
   return;
 };
 
