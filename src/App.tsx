@@ -1,10 +1,8 @@
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
-import AppBar from 'components/CollapsibleAppBar';
-import TestCards from 'components/TestCards';
-import TestColorButtons from 'components/TestColorButtons';
-import TestParagraph from 'components/TestParagraph';
+import AppBar from 'components/AppBar';
+import { TestCards, TestColorButtons, TestParagraph } from 'components/test';
 
 const App = () => {
   return (
