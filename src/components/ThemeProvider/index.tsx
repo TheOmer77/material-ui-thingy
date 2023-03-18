@@ -17,6 +17,8 @@ const ELEVATION_VALUES = [
 
 const metaThemeColor = document.querySelector('meta[name=theme-color]');
 
+const defaultTheme = createTheme();
+
 const appTheme = (prefersDarkMode: boolean) => {
   const palette = {
     // Set colors to normal/lighter variants, based on system dark theme setting
@@ -72,10 +74,27 @@ const appTheme = (prefersDarkMode: boolean) => {
           ),
         },
       },
-      MuiCard: { styleOverrides: { root: { boxShadow: 'none' } } },
       MuiAppBar: {
         styleOverrides: {
           colorDefault: { backgroundColor: palette.background.paper },
+          colorPrimary: {
+            ...([...Array(24).keys()] as const).reduce(
+              (obj, key) => ({
+                ...obj,
+                [`&.MuiPaper-elevation${key + 1}`]: {
+                  boxShadow: defaultTheme.shadows[key + 1].replaceAll(
+                    '0,0,0',
+                    hexToRgb(
+                      prefersDarkMode
+                        ? getNeutralVariant(COLORS.primary[15])
+                        : palette.primary.main
+                    ).replaceAll(/(rgb\(|\))/g, '')
+                  ),
+                },
+              }),
+              {}
+            ),
+          },
           colorTransparent: {
             boxShadow: 'none',
             backgroundImage: 'none',
