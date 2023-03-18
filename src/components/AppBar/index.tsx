@@ -85,7 +85,6 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
     },
   },
   '& + .MuiToolbar-root': {
-    position: 'fixed',
     zIndex: theme.zIndex.appBar + 1,
     width: '100%',
     top: 0,
@@ -96,6 +95,15 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
     '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
     '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
   },
+  ...['fixed', 'absolute', 'relative', 'static', 'sticky'].reduce(
+    (obj, position) => ({
+      ...obj,
+      [`&.MuiAppBar-position${
+        position.charAt(0).toUpperCase() + position.slice(1)
+      } + .MuiToolbar-root`]: { position },
+    }),
+    {}
+  ),
   [`&.MuiAppBar-colorPrimary + .MuiToolbar-root,
   &.MuiAppBar-colorSecondary + .MuiToolbar-root`]: {
     color:
