@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import { styled } from '@mui/material';
@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import MaterialIcon from 'components/MaterialIcon';
+import getScrollableParent from 'utils/getScrollableParent';
 
 const remToNumber = (value: string) => parseFloat(value.replace('rem', ''));
 const pxToNumber = (value: string) => parseFloat(value.replace('px', ''));
@@ -34,9 +35,6 @@ const getValues = (theme: Theme) => ({
 });
 
 const scrollEvents = ['scroll', 'touchmove'];
-
-const updateScroll = (setScroll: Dispatch<React.SetStateAction<number>>) =>
-  setScroll(window.scrollY);
 
 interface AppBarProps extends MuiAppBarProps {
   title?: string;
@@ -133,31 +131,46 @@ const AppBar = ({
   const theme = useTheme();
   const smBreakpoint = useMediaQuery(theme.breakpoints.up('sm'));
   const [scroll, setScroll] = useState(window.scrollY);
+  const ref = useRef<HTMLDivElement | null>(null);
+
   const values = getValues(theme);
   const toolbarValues = smBreakpoint
     ? values.toolbarDesktop
     : values.toolbarMobile;
 
   useEffect(() => {
-    const eventListener = () => updateScroll(setScroll);
+    const scrollableParent =
+      ref.current && getScrollableParent(ref.current) !== document.body
+        ? getScrollableParent(ref.current)
+        : null;
+
+    const eventListener = () =>
+      setScroll(
+        scrollableParent ? scrollableParent?.scrollTop : window.scrollY
+      );
     if (collapsing) {
-      setScroll(window.scrollY);
+      setScroll(
+        scrollableParent ? scrollableParent?.scrollTop : window.scrollY
+      );
       scrollEvents.forEach((event) =>
-        document.addEventListener(event, eventListener)
+        (scrollableParent || document).addEventListener(event, eventListener)
       );
     }
     return () => {
       if (collapsing)
         scrollEvents.forEach((event) =>
-          document.removeEventListener(event, eventListener)
+          (scrollableParent || document).removeEventListener(
+            event,
+            eventListener
+          )
         );
     };
-  }, []);
+  }, [collapsing]);
 
   return (
     <>
       {!(color === 'transparent' && !title?.length) && (
-        <StyledAppBar {...props} color={color}>
+        <StyledAppBar {...props} color={color} ref={ref}>
           <Toolbar
             style={
               collapsing
