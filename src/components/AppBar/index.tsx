@@ -34,8 +34,6 @@ const getValues = (theme: Theme) => ({
   },
 });
 
-const scrollEvents = ['scroll', 'touchmove'];
-
 interface AppBarProps extends MuiAppBarProps {
   title?: string;
   subtitle?: string;
@@ -171,17 +169,13 @@ const AppBar = ({
       setScroll(
         scrollableParent ? scrollableParent?.scrollTop : window.scrollY
       );
-      scrollEvents.forEach((event) =>
-        (scrollableParent || document).addEventListener(event, eventListener)
-      );
+      (scrollableParent || document).addEventListener('scroll', eventListener);
     }
     return () => {
       if (collapsing)
-        scrollEvents.forEach((event) =>
-          (scrollableParent || document).removeEventListener(
-            event,
-            eventListener
-          )
+        (scrollableParent || document).removeEventListener(
+          'scroll',
+          eventListener
         );
     };
   }, [collapsing]);
