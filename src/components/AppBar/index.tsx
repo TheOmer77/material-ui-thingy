@@ -96,7 +96,12 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
     '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
     '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
   },
-  ...['fixed', 'absolute', 'relative', 'static', 'sticky'].reduce(
+  '&.MuiAppBar-positionFixed + .MuiToolbar-root': {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+  },
+  ...['absolute', 'relative', 'static', 'sticky'].reduce(
     (obj, position) => ({
       ...obj,
       [`&.MuiAppBar-position${
