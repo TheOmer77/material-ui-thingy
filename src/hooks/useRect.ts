@@ -2,8 +2,9 @@
 // Slightly modified by me
 
 import { useLayoutEffect, useCallback, useState, RefObject } from 'react';
+
+import useOnScreen from './useOnScreen';
 import getScrollableParent from 'utils/getScrollableParent';
-import isElementInViewport from 'utils/isElementInViewport';
 
 type RectResult = {
   bottom: number;
@@ -54,14 +55,15 @@ const removeListeners = (
 };
 
 const useRect = <T extends HTMLElement>(ref: RefObject<T>): RectResult => {
+  const isElementOnScreen = useOnScreen(ref);
   const [rect, setRect] = useState<RectResult>(
     ref?.current ? getRect(ref.current) : getRect()
   );
 
   const handleResize = useCallback(() => {
-    if (!ref.current || !isElementInViewport(ref.current)) return;
+    if (!ref.current || !isElementOnScreen) return;
     setRect(getRect(ref.current)); // Update client rect
-  }, [ref]);
+  }, [isElementOnScreen, ref]);
 
   useLayoutEffect(() => {
     const element = ref.current;
@@ -69,10 +71,10 @@ const useRect = <T extends HTMLElement>(ref: RefObject<T>): RectResult => {
 
     handleResize();
 
-    addListeners(element, handleResize);
+    isElementOnScreen && addListeners(element, handleResize);
 
     return () => removeListeners(element, handleResize);
-  }, [handleResize, ref]);
+  }, [handleResize, isElementOnScreen, ref]);
 
   return rect;
 };
