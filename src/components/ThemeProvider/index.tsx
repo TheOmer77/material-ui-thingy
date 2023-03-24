@@ -86,7 +86,7 @@ const appTheme = (prefersDarkMode: boolean) => {
                     '0,0,0',
                     hexToRgb(
                       prefersDarkMode
-                        ? getNeutralVariant(COLORS.primary[15])
+                        ? getNeutralVariant(COLORS.primary[10])
                         : palette.primary.main
                     ).replaceAll(/(rgb\(|\))/g, '')
                   ),
