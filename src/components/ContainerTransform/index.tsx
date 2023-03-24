@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   DetailedHTMLProps,
   HTMLAttributes,
   useLayoutEffect,
@@ -47,7 +48,6 @@ const Root = styled('div')(({ theme }) => ({
 
   /*
   Default expanded state
-  This class can be replaced with any other class defining the same properties.
   */
   '& .transforming-container--expanded': {
     top: 0,
@@ -185,7 +185,7 @@ const ContainerTransform = ({
         '--collapsedRight': `${placeholderRect?.right}px`,
         '--collapsedWidth': `${placeholderRect?.width}px`,
         '--collapsedHeight': `${placeholderRect?.height}px`,
-      } as React.CSSProperties),
+      } as CSSProperties),
     [
       placeholderRect?.bottom,
       placeholderRect?.height,
