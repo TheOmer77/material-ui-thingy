@@ -1,11 +1,9 @@
 // Based on: https://gist.github.com/morajabi/523d7a642d8c0a2f71fcfa0d8b3d2846
 // Slightly modified by me
 
-import { useLayoutEffect, useCallback, useState } from 'react';
+import { useLayoutEffect, useCallback, useState, RefObject } from 'react';
 import getScrollableParent from 'utils/getScrollableParent';
 import isElementInViewport from 'utils/isElementInViewport';
-
-const scrollEvents = ['scroll', 'touchmove'];
 
 type RectResult = {
   bottom: number;
@@ -16,20 +14,18 @@ type RectResult = {
   width: number;
 };
 
-DOMRect;
-
-const getRect = <T extends HTMLElement>(element?: T): RectResult => {
-  let rect: RectResult = {
-    bottom: 0,
-    height: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-    width: 0,
-  };
-  if (element) rect = element.getBoundingClientRect();
-  return rect;
-};
+const getRect = <T extends HTMLElement>(element?: T) =>
+  ['bottom', 'height', 'left', 'right', 'top', 'width'].reduce(
+    (obj, key) => ({
+      ...obj,
+      [key]: element?.getBoundingClientRect?.()?.[key as keyof RectResult]
+        ? Math.floor(
+            element?.getBoundingClientRect?.()?.[key as keyof RectResult]
+          )
+        : 0,
+    }),
+    {}
+  ) as RectResult;
 
 const addListeners = (
   element: HTMLElement,
@@ -38,11 +34,10 @@ const addListeners = (
   window.addEventListener('resize', callback);
 
   const scrollableParent = getScrollableParent(element);
-  scrollEvents.forEach((event) => {
-    if (scrollableParent === document.body)
-      return window.addEventListener(event, callback);
-    scrollableParent.addEventListener(event, callback);
-  });
+
+  if (scrollableParent === document.body)
+    return window.addEventListener('scroll', callback);
+  scrollableParent.addEventListener('scroll', callback);
 };
 
 const removeListeners = (
@@ -52,18 +47,15 @@ const removeListeners = (
   window.removeEventListener('resize', callback);
 
   const scrollableParent = getScrollableParent(element);
-  scrollEvents.forEach((event) => {
-    if (scrollableParent === document.body)
-      return window.removeEventListener(event, callback);
-    scrollableParent.removeEventListener(event, callback);
-  });
+
+  if (scrollableParent === document.body)
+    return window.removeEventListener('scroll', callback);
+  scrollableParent.removeEventListener('scroll', callback);
 };
 
-const useRect = <T extends HTMLElement>(
-  ref: React.RefObject<T>
-): RectResult => {
+const useRect = <T extends HTMLElement>(ref: RefObject<T>): RectResult => {
   const [rect, setRect] = useState<RectResult>(
-    ref && ref.current ? getRect(ref.current) : getRect()
+    ref?.current ? getRect(ref.current) : getRect()
   );
 
   const handleResize = useCallback(() => {
