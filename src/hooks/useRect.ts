@@ -2,9 +2,13 @@
 // Slightly modified by me
 
 import { useLayoutEffect, useCallback, useState, RefObject } from 'react';
-
-import useOnScreen from './useOnScreen';
 import getScrollableParent from 'utils/getScrollableParent';
+import useOnScreen from './useOnScreen';
+/**
+ * Polyfill for `scrollend` event, which is not yet supported in most browsers.
+ * Browser support: https://developer.mozilla.org/en-US/docs/Web/API/Document/scrollend_event#browser_compatibility
+ */
+import 'scrollyfills';
 
 type RectResult = {
   bottom: number;
@@ -37,8 +41,8 @@ const addListeners = (
   const scrollableParent = getScrollableParent(element);
 
   if (scrollableParent === document.body)
-    return window.addEventListener('scroll', callback);
-  scrollableParent.addEventListener('scroll', callback);
+    return window.addEventListener('scrollend', callback);
+  scrollableParent.addEventListener('scrollend', callback);
 };
 
 const removeListeners = (
@@ -50,8 +54,8 @@ const removeListeners = (
   const scrollableParent = getScrollableParent(element);
 
   if (scrollableParent === document.body)
-    return window.removeEventListener('scroll', callback);
-  scrollableParent.removeEventListener('scroll', callback);
+    return window.removeEventListener('scrollend', callback);
+  scrollableParent.removeEventListener('scrollend', callback);
 };
 
 const useRect = <T extends HTMLElement>(ref: RefObject<T>): RectResult => {
