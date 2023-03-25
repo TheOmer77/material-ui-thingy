@@ -36,7 +36,9 @@ interface AppBarProps extends MuiAppBarProps {
   title?: string;
   subtitle?: string;
   collapsing?: boolean;
+  addPadding?: boolean;
   navIcon?: ReactNode;
+  toolbarColor?: MuiAppBarProps['color'];
 }
 
 const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
@@ -84,32 +86,7 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
       fontWeight: 'normal',
     },
   },
-  '& + .MuiToolbar-root': {
-    zIndex: theme.zIndex.appBar + 1,
-    width: '100%',
-    top: 0,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    '&.MuiToolbar-withNavIcon': { justifyContent: 'space-between' },
 
-    '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
-    '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
-  },
-  '&.MuiAppBar-positionFixed + .MuiToolbar-root': {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-  },
-  ...['absolute', 'relative', 'static', 'sticky'].reduce(
-    (obj, position) => ({
-      ...obj,
-      [`&.MuiAppBar-position${
-        position.charAt(0).toUpperCase() + position.slice(1)
-      } + .MuiToolbar-root`]: { position },
-    }),
-    {}
-  ),
   [`&.MuiAppBar-colorPrimary + .MuiToolbar-root,
   &.MuiAppBar-colorSecondary + .MuiToolbar-root`]: {
     color:
@@ -117,6 +94,40 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
         ? theme.palette.common.white
         : theme.palette.primary.contrastText,
   },
+}));
+
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  zIndex: theme.zIndex.appBar + 1,
+  width: '100%',
+  top: 0,
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  '&.MuiToolbar-withNavIcon': { justifyContent: 'space-between' },
+
+  '&.MuiToolbar-positionFixed': {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+  },
+  ...['absolute', 'relative', 'static', 'sticky'].reduce(
+    (obj, position) => ({
+      ...obj,
+      [`&.MuiToolbar-position${position[0].toUpperCase() + position.slice(1)}`]:
+        { position },
+    }),
+    {}
+  ),
+  [`&.MuiToolbar-colorPrimary,
+  &.MuiToolbar-colorSecondary`]: {
+    color:
+      theme.palette.mode === 'dark'
+        ? theme.palette.common.white
+        : theme.palette.primary.contrastText,
+  },
+
+  '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
+  '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
 }));
 
 const ToolbarPadding = styled(Toolbar)(({ theme }) => ({
@@ -138,7 +149,10 @@ const AppBar = ({
   title,
   subtitle,
   collapsing = false,
+  addPadding = true,
   color = 'primary',
+  toolbarColor,
+  position = 'fixed',
   navIcon,
   children,
   ...props
@@ -181,7 +195,7 @@ const AppBar = ({
   return (
     <>
       {!(color === 'transparent' && !title?.length) && (
-        <StyledAppBar {...props} color={color} ref={ref}>
+        <StyledAppBar {...props} color={color} position={position} ref={ref}>
           <Toolbar
             style={
               collapsing
@@ -253,13 +267,28 @@ const AppBar = ({
           </Toolbar>
         </StyledAppBar>
       )}
-      <Toolbar className={classNames(navIcon && 'MuiToolbar-withNavIcon')}>
+      <StyledToolbar
+        className={classNames(
+          `MuiToolbar-color${
+            (toolbarColor || color)[0].toUpperCase() +
+            (toolbarColor || color).slice(1, (toolbarColor || color).length)
+          }`,
+          `MuiToolbar-position${
+            position[0].toUpperCase() + position.slice(1, position.length)
+          }`,
+          navIcon && 'MuiToolbar-withNavIcon'
+        )}
+      >
         {navIcon}
         <div className='actions-container'>{children}</div>
-      </Toolbar>
-      <ToolbarPadding
-        className={collapsing ? 'appbar-padding-collapsing' : 'appbar-padding'}
-      />
+      </StyledToolbar>
+      {addPadding && (
+        <ToolbarPadding
+          className={
+            collapsing ? 'appbar-padding-collapsing' : 'appbar-padding'
+          }
+        />
+      )}
     </>
   );
 };
