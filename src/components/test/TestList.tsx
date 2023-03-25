@@ -8,12 +8,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
 
-import TestParagraph from './TestParagraph';
 import AppBar from 'components/AppBar';
 import CollapsedComponent from 'components/ContainerTransform/CollapsedComponent';
 import ContainerTransform from 'components/ContainerTransform';
 import ExpandedComponent from 'components/ContainerTransform/ExpandedComponent';
 import MaterialIcon from 'components/MaterialIcon';
+
+export interface TestListItem {
+  primaryText: string;
+  secondaryText: string;
+  content: ReactNode;
+}
 
 const StyledContainerTransform = styled(ContainerTransform)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -28,20 +33,12 @@ const ExpandedPaper = styled(Paper)({
 });
 ExpandedPaper.defaultProps = { square: true };
 
-const TestList = ({
-  items,
-}: {
-  items: {
-    primaryText: string;
-    secondaryText: string;
-    content: ReactNode;
-  }[];
-}) => {
+const TestList = ({ items }: { items: TestListItem[] }) => {
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
   return (
     <List>
-      {items.map(({ primaryText, secondaryText }, index) => (
+      {items.map(({ primaryText, secondaryText, content }, index) => (
         <StyledContainerTransform
           key={`listItem-${index + 1}`}
           id={`listItem-${index + 1}`}
@@ -70,9 +67,7 @@ const TestList = ({
                   </IconButton>
                 }
               />
-              <Container>
-                <TestParagraph />
-              </Container>
+              <Container>{content}</Container>
             </ExpandedPaper>
           </ExpandedComponent>
         </StyledContainerTransform>
