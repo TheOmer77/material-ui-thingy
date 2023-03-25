@@ -13,4 +13,5 @@ export default defineConfig({
       eslint: { lintCommand: 'eslint "./src/**/*.{ts,tsx}"' },
     }),
   ],
+  server: { host: true },
 });
