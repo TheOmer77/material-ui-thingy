@@ -2,7 +2,6 @@ import { styled } from '@mui/material';
 import Button from '@mui/material/Button';
 
 const Root = styled('div')(({ theme }) => ({
-  marginTop: theme.spacing(2),
   padding: theme.spacing(0, 1),
   display: 'flex',
   flexDirection: 'row',

@@ -2,14 +2,14 @@ import { styled } from '@mui/material';
 import Card from '@mui/material/Card';
 
 const Root = styled('div')(({ theme }) => ({
-  marginTop: theme.spacing(2),
   padding: theme.spacing(0, 1),
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
+  display: 'grid',
   gap: theme.spacing(1),
+  gridTemplateColumns: 'repeat(auto-fit, minmax(var(--card-size), 1fr))',
+  '--card-size': theme.spacing(14),
+  [theme.breakpoints.up('md')]: { '--card-size': theme.spacing(20) },
 
-  '& .MuiPaper-root': { width: theme.spacing(16), height: theme.spacing(16) },
+  '& .MuiPaper-root': { width: '100%', aspectRatio: '1 / 1' },
 }));
 
 const TestCards = () => {

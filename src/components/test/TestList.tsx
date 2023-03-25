@@ -33,6 +33,11 @@ const ExpandedPaper = styled(Paper)({
 });
 ExpandedPaper.defaultProps = { square: true };
 
+const StyledContainer = styled(Container)(({ theme }) => ({
+  padding: theme.spacing(2),
+  '& p': { margin: 0 },
+}));
+
 const TestList = ({ items }: { items: TestListItem[] }) => {
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
@@ -67,7 +72,7 @@ const TestList = ({ items }: { items: TestListItem[] }) => {
                   </IconButton>
                 }
               />
-              <Container>{content}</Container>
+              <StyledContainer>{content}</StyledContainer>
             </ExpandedPaper>
           </ExpandedComponent>
         </StyledContainerTransform>
