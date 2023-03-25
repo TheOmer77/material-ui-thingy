@@ -56,7 +56,7 @@ const Root = styled('div')(({ theme }) => ({
     right: 0,
     width: '100%',
     height: '100%',
-    zIndex: theme.zIndex.drawer,
+    zIndex: theme.zIndex.drawer - 1,
     position: 'fixed',
   },
 
@@ -136,7 +136,7 @@ const Root = styled('div')(({ theme }) => ({
     height: '100%',
     position: 'fixed',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: theme.zIndex.drawer - 1,
+    zIndex: theme.zIndex.drawer - 2,
 
     pointerEvents: 'none',
   },
