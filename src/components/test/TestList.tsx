@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 
 import { styled } from '@mui/material';
 import Container from '@mui/material/Container';
@@ -35,50 +35,55 @@ ExpandedPaper.defaultProps = { square: true };
 
 const StyledContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(2),
-  '& p': { margin: 0 },
 }));
 
-const TestList = ({ items }: { items: TestListItem[] }) => {
-  const [expandedItem, setExpandedItem] = useState<number | null>(null);
-
-  return (
-    <List>
-      {items.map(({ primaryText, secondaryText, content }, index) => (
-        <StyledContainerTransform
-          key={`listItem-${index + 1}`}
-          id={`listItem-${index + 1}`}
-          expanded={expandedItem === index}
-        >
-          <CollapsedComponent>
-            <ListItemButton
-              onClick={() => setTimeout(() => setExpandedItem(index), 10)}
-            >
-              <ListItemText primary={primaryText} secondary={secondaryText} />
-            </ListItemButton>
-          </CollapsedComponent>
-          <ExpandedComponent>
-            <ExpandedPaper>
-              <AppBar
-                title={primaryText}
-                collapsing
-                navIcon={
-                  <IconButton
-                    edge='start'
-                    size='large'
-                    aria-label='back'
-                    onClick={() => setExpandedItem(null)}
-                  >
-                    <MaterialIcon iconName='arrow_back' />
-                  </IconButton>
-                }
-              />
-              <StyledContainer>{content}</StyledContainer>
-            </ExpandedPaper>
-          </ExpandedComponent>
-        </StyledContainerTransform>
-      ))}
-    </List>
-  );
-};
+const TestList = ({
+  items,
+  expandedItemIndex,
+  onItemClick,
+  onItemClose,
+}: {
+  items: TestListItem[];
+  expandedItemIndex?: number;
+  onItemClick?: (itemIndex?: number) => void;
+  onItemClose?: () => void;
+}) => (
+  <List>
+    {items.map(({ primaryText, secondaryText, content }, index) => (
+      <StyledContainerTransform
+        key={`listItem-${index + 1}`}
+        id={`listItem-${index + 1}`}
+        expanded={expandedItemIndex === index}
+      >
+        <CollapsedComponent>
+          <ListItemButton
+            onClick={() => setTimeout(() => onItemClick?.(index), 10)}
+          >
+            <ListItemText primary={primaryText} secondary={secondaryText} />
+          </ListItemButton>
+        </CollapsedComponent>
+        <ExpandedComponent>
+          <ExpandedPaper>
+            <AppBar
+              title={primaryText}
+              collapsing
+              navIcon={
+                <IconButton
+                  edge='start'
+                  size='large'
+                  aria-label='back'
+                  onClick={() => onItemClose?.()}
+                >
+                  <MaterialIcon iconName='arrow_back' />
+                </IconButton>
+              }
+            />
+            <StyledContainer>{content}</StyledContainer>
+          </ExpandedPaper>
+        </ExpandedComponent>
+      </StyledContainerTransform>
+    ))}
+  </List>
+);
 
 export default TestList;
