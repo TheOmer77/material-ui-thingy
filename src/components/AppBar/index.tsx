@@ -74,7 +74,10 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
       marginBlockEnd: theme.spacing(0.75),
       [theme.breakpoints.up('sm')]: { marginBlockEnd: theme.spacing(1.125) },
     },
-    '& .title:not(.title-collapsing)': { marginLeft: theme.spacing(6) },
+    [`& .title-container--with-nav-icon .title:not(.title-collapsing),
+& .title-container--with-nav-icon .subtitle`]: {
+      marginLeft: theme.spacing(6),
+    },
     '& .title.title-collapsing': { fontSize: theme.typography.h4.fontSize },
     '& .subtitle': {
       marginBlockStart: theme.spacing(-1),
@@ -193,6 +196,7 @@ const AppBar = ({
             <div
               className={classNames(
                 'title-container',
+                navIcon && 'title-container--with-nav-icon',
                 collapsing && (subtitle ? 'subtitle-margin' : 'title-margin')
               )}
             >
