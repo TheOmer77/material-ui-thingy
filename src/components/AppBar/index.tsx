@@ -6,10 +6,8 @@ import { Theme, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import MaterialIcon from 'components/MaterialIcon';
 import getScrollableParent from 'utils/getScrollableParent';
 
 const remToNumber = (value: string) => parseFloat(value.replace('rem', ''));
@@ -89,7 +87,8 @@ const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
     top: 0,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
+    '&.MuiToolbar-withNavIcon': { justifyContent: 'space-between' },
 
     '& > .MuiIconButton-root, & > .actions-container > *': { color: 'inherit' },
     '& > .MuiIconButton-root:first-of-type': { marginRight: theme.spacing(2) },
@@ -137,11 +136,7 @@ const AppBar = ({
   subtitle,
   collapsing = false,
   color = 'primary',
-  navIcon = (
-    <IconButton edge='start' size='large' aria-label='menu'>
-      <MaterialIcon iconName='menu' />
-    </IconButton>
-  ),
+  navIcon,
   children,
   ...props
 }: AppBarProps) => {
@@ -213,9 +208,13 @@ const AppBar = ({
                         fontSize: `clamp(${values.title.min}rem, ${
                           values.title.max - scroll / 75
                         }rem, ${values.title.max}rem)`,
-                        marginInlineStart: `clamp(0px, ${
-                          scroll / (smBreakpoint ? 1.625 : 1.5)
-                        }px, ${theme.spacing(6)})`,
+                        ...(navIcon
+                          ? {
+                              marginInlineStart: `clamp(0px, ${
+                                scroll / (smBreakpoint ? 1.625 : 1.5)
+                              }px, ${theme.spacing(6)})`,
+                            }
+                          : {}),
                       }
                     : {}
                 }
@@ -232,9 +231,13 @@ const AppBar = ({
                           fontSize: `clamp(${values.subtitle.min}rem, ${
                             values.subtitle.max - scroll / 512
                           }rem, ${values.subtitle.max}rem)`,
-                          marginInlineStart: `clamp(0px, ${
-                            scroll / (smBreakpoint ? 1.625 : 1.5)
-                          }px, ${theme.spacing(6)})`,
+                          ...(navIcon
+                            ? {
+                                marginInlineStart: `clamp(0px, ${
+                                  scroll / (smBreakpoint ? 1.625 : 1.5)
+                                }px, ${theme.spacing(6)})`,
+                              }
+                            : {}),
                         }
                       : {}
                   }
@@ -246,7 +249,7 @@ const AppBar = ({
           </Toolbar>
         </StyledAppBar>
       )}
-      <Toolbar>
+      <Toolbar className={classNames(navIcon && 'MuiToolbar-withNavIcon')}>
         {navIcon}
         <div className='actions-container'>{children}</div>
       </Toolbar>
