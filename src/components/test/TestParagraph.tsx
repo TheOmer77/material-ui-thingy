@@ -1,5 +1,9 @@
+import { styled } from '@mui/material';
+
+const StyledParagraph = styled('p')({ margin: 0 });
+
 const TestParagraph = () => (
-  <p>
+  <StyledParagraph>
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque eos ea
     provident fugiat ipsa repellendus cum nisi voluptate, itaque ratione
     expedita et vitae optio vel ad amet eveniet minus dolorum dicta asperiores
@@ -207,7 +211,7 @@ const TestParagraph = () => (
     vitae nam accusamus nisi voluptatibus voluptatum reiciendis itaque sit
     aspernatur facilis temporibus alias, fuga repellendus, in a iste quia id
     pariatur suscipit. Aliquid optio exercitationem quibusdam numquam.
-  </p>
+  </StyledParagraph>
 );
 
 export default TestParagraph;
