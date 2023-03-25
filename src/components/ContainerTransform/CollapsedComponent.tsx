@@ -1,19 +1,30 @@
-import { cloneElement, isValidElement, ReactNode, useRef } from 'react';
+import {
+  cloneElement,
+  DetailedHTMLProps,
+  HTMLAttributes,
+  isValidElement,
+  JSXElementConstructor,
+  ReactElement,
+  useRef,
+} from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import useContainerTransform from 'hooks/useContainerTransform';
 import timeoutFromTransitionString from 'utils/timeoutFromTransitionString';
 
-const CollapsedComponent = ({
+const CollapsedComponent = <T extends HTMLElement>({
   alwaysRender,
   children,
 }: {
   alwaysRender?: boolean;
-  children: ReactNode;
+  children: ReactElement<
+    DetailedHTMLProps<HTMLAttributes<T>, T>,
+    string | JSXElementConstructor<DetailedHTMLProps<HTMLAttributes<T>, T>>
+  >;
 }) => {
   const { expanded } = useContainerTransform();
 
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<T>(null);
 
   const timeouts = {
     componentsIn: ref.current
