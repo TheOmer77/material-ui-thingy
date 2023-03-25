@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { styled } from '@mui/material';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -10,6 +9,7 @@ import {
   TestList,
   TestParagraph,
 } from 'components/test';
+import type { TestListItem } from 'components/test/TestList';
 
 const ITEMS_COUNT = 25;
 const numberWithSuffix = (number: number) => {
@@ -26,15 +26,23 @@ const numberWithSuffix = (number: number) => {
       : lastDigit === 3 && number + 'rd'
     : number + 'th';
 };
-const listItems: {
-  primaryText: string;
-  secondaryText: string;
-  content: ReactNode;
-}[] = [...Array(ITEMS_COUNT)].map((_, index) => ({
-  primaryText: `List Item ${index + 1}`,
-  secondaryText: `I am the ${numberWithSuffix(index + 1)} item!`,
-  content: <TestParagraph />,
-}));
+const listItems: TestListItem[] = [
+  {
+    primaryText: 'Test color buttons',
+    secondaryText: 'Testing colors, I guess',
+    content: <TestColorButtons />,
+  },
+  {
+    primaryText: 'Test cards',
+    secondaryText: 'Testing paper elevation',
+    content: <TestCards />,
+  },
+  ...[...Array(ITEMS_COUNT).keys()].map((index) => ({
+    primaryText: `List Item ${index + 1}`,
+    secondaryText: `I am the ${numberWithSuffix(index + 1)} item!`,
+    content: <TestParagraph />,
+  })),
+];
 
 const StyledContainer = styled(Container)({
   padding: 0,
@@ -47,8 +55,6 @@ const App = () => {
         <Button>Login</Button>
       </AppBar>
       <StyledContainer>
-        <TestColorButtons />
-        <TestCards />
         <TestList items={listItems} />
       </StyledContainer>
     </>
