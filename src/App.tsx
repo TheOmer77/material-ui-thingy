@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 
-import { styled, Theme, useMediaQuery } from '@mui/material';
+import { alpha, styled, Theme, useMediaQuery } from '@mui/material';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import List from '@mui/material/List';
@@ -18,6 +18,16 @@ import { TestList } from 'components/test';
 import listItems from 'constants/listItems';
 
 import trianglesBg from 'assets/triangles-bg.svg';
+
+const bgGradient = (theme: Theme, position: 'top' | 'bottom') => {
+  const color =
+    theme.palette.mode === 'dark' ? '#272727' : theme.palette.primary.main;
+  const values = [color, alpha(color, 0)];
+  return `linear-gradient(${(position === 'bottom'
+    ? values.reverse()
+    : values
+  ).join(', ')})`;
+};
 
 const StyledContainer = styled('div')(({ theme }) => ({
   width: '100%',
@@ -52,6 +62,15 @@ const StyledContainer = styled('div')(({ theme }) => ({
           : theme.palette.primary.main,
       backgroundImage: `url("${trianglesBg}")`,
       backgroundPosition: 'center',
+      position: 'relative',
+      '&::before, &::after': {
+        content: "''",
+        width: '100%',
+        height: theme.spacing(10),
+        position: 'absolute',
+      },
+      '&::before': { top: 0, backgroundImage: bgGradient(theme, 'top') },
+      '&::after': { bottom: 0, backgroundImage: bgGradient(theme, 'bottom') },
     },
   },
 }));
