@@ -46,11 +46,12 @@ const StyledContainer = styled('div')(({ theme }) => ({
     },
   },
   '& .list-container': {
+    boxShadow: theme.shadows[2],
+    zIndex: 1,
     minWidth: '50vw',
     [theme.breakpoints.up('lg')]: { minWidth: theme.spacing(64) },
   },
   '& .content-container': {
-    flexGrow: 1,
     padding: theme.spacing(2, 0),
     height: '100vh',
     '@supports (height: 100dvh)': { height: '100dvh' },
@@ -71,6 +72,13 @@ const StyledContainer = styled('div')(({ theme }) => ({
       },
       '&::before': { top: 0, backgroundImage: bgGradient(theme, 'top') },
       '&::after': { bottom: 0, backgroundImage: bgGradient(theme, 'bottom') },
+    },
+
+    '&, & .MuiAppBar-root, & .MuiToolbar-root': {
+      width: '50vw',
+      [theme.breakpoints.up('lg')]: {
+        width: `calc(100% - ${theme.spacing(64)})`,
+      },
     },
   },
 }));
@@ -123,10 +131,16 @@ const App = () => {
                 typeof selectedItem === 'number' && 'selected-item-content'
               )}
             >
+              {typeof selectedItem === 'number' && (
+                <AppBar
+                  collapsing
+                  title={listItems[selectedItem].primaryText}
+                  subtitle={listItems[selectedItem].secondaryText}
+                />
+              )}
               <Container>
-                {typeof selectedItem === 'number' && (
-                  <>{listItems[selectedItem].content}</>
-                )}
+                {typeof selectedItem === 'number' &&
+                  listItems[selectedItem].content}
               </Container>
             </div>
           </>
